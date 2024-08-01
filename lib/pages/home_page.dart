@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
 import '../models/articles_models.dart';
 import '../models/top_headlines.dart';
 import '../services/articles_services.dart';
 import '../services/top_headlines_services.dart';
+
+import 'all_stories_page.dart';
+import 'detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -109,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                               width: 300.0,
                               height: 300.0,
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                             ),
@@ -149,7 +151,11 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
               child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const AllStoriesPage();
+              }));
+            },
             child: const Text(
               "View All",
               textAlign: TextAlign.right,
@@ -177,7 +183,7 @@ class _HomePageState extends State<HomePage> {
               return const Center(child: Text("No articles found"));
             }
             return ListView.builder(
-                itemCount: 5,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   Articles articles = snapshot.data![index];
                   double titleHeight = 24.0; // Estimated height for the title
@@ -192,7 +198,12 @@ class _HomePageState extends State<HomePage> {
                       descriptionHeight +
                       (2 * verticalPadding);
                   return ListTile(
-                    onTap: () {},
+                    onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DetailPage(articles: articles);
+                    }));
+                  },
                     isThreeLine: true,
                     title: Text(
                       articles.source?.name ?? "Unknow Source",
